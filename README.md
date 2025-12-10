@@ -1,7 +1,7 @@
 # Python Projects
 
-My 10-project learning journey from beginner ? advanced Python  
-+ real-world Git & GitHub workflows.
+My 10-project learning journey from beginner to advanced Python  
+
 
 ## Projects
 1. 01-Number-Guessing-Game (starting now!)
@@ -15,4 +15,3 @@ My 10-project learning journey from beginner ? advanced Python
 9. Flashcard Web App (Backend)
 10. Real-Time Chat Application
 
-Built step-by-step with clean code & professional open-source practices ??
