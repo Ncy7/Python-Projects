@@ -4,9 +4,9 @@ My 10-project learning journey from beginner to advanced Python
 
 
 ## Projects
-1. 01-Number-Guessing-Game (starting now!)
-2. 02-Rock-Paper-Scissors
-3. 03-Password-Generator
+1. Number-Guessing-Game 
+2. Rock-Paper-Scissors
+3. Password-Generator
 4. Personal Expense Tracker
 5. Weather Fetcher App
 6. Library Management System
