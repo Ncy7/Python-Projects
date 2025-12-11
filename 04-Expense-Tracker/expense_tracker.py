@@ -1,6 +1,8 @@
 # 04-Expense-Tracker/expense_tracker.py
 import csv
 from datetime import date
+from collections import defaultdict # for default dictionary which auto creats missing key
+import os   # for checking file existence
 
 # File where we save everything
 FILE_NAME = "expenses.csv"
@@ -46,38 +48,87 @@ def add_expense(expenses):
     print("Expense added!")
 
 def show_expenses(expenses):
-    """Print all expenses nicely"""
     if not expenses:
-        print("No expenses yet!")
+        print("No expenses recorded yet!\n")
         return
     
+    print("="*60)   # table header banako
+    print(f"{'#':<3} {'Date':<12} {'Category':<15} {'Amount':>8}  {'Note'}")
+    print("-"*60)
+    
     total = 0
-    print("\n=== All Expenses ===")
-    for e in expenses:
-        print(f"{e['date']} | {e['category']:<12} | ${e['amount']:.2f} | {e['note']}")
+    for i, e in enumerate(expenses, 1): # enumerate le index (i) ra element (e) return garcha, 1 bata start garne indexing
+        print(f"{i:<3} {e['date']:<12} {e['category']:<15} ${e['amount']:>7.2f}  {e['note']}")  # e['key'] → access values in each expense dictionary.
+                                                                                                # ${e['amount']:>7.2f} → formats the amount as currency with 2 decimal places, right-aligned.
         total += e['amount']
-    print(f"\nTOTAL SPENT: ${total:.2f}")
+    
+    print("-"*60)   # Prints a separator line.
+                    # Displays the total expense nicely formatted.
+    print(f"{'TOTAL':<38} ${total:>7.2f}\n")
+
+def show_summary(expenses):
+    if not expenses:
+        print("No data to summarize!\n")
+        return
+    
+    # Category totals
+    by_category = defaultdict(float)
+    for e in expenses:
+        by_category[e['category']] += e['amount']
+    
+    print("SUMMARY BY CATEGORY")
+    print("-" * 40)
+    for cat, amt in sorted(by_category.items(), key=lambda x: x[1], reverse=True):
+        print(f"{cat.capitalize():<20} ${amt:>8.2f}")
+    print("-" * 40)
+    
+    # This month only
+    this_month = date.today().strftime("%Y-%m")
+    monthly_total = sum(e['amount'] for e in expenses if e['date'].startswith(this_month))
+    print(f"This month ({this_month}): ${monthly_total:.2f}\n")
+
+def delete_expense(expenses):
+    show_expenses(expenses)
+    if not expenses:
+        return
+    
+    try:
+        idx = int(input("Enter # of expense to delete (or 0 to cancel): ")) - 1
+        if idx < 0 or idx >= len(expenses):
+            print("Invalid number!")
+            return
+        removed = expenses.pop(idx)
+        print(f"Deleted: ${removed['amount']} on {removed['date']} ({removed['category']})")
+    except ValueError:
+        print("Invalid input!")
 
 def main():
-    print("Personal Expense Tracker")
-    expenses = load_expenses()  # ← Loads old data!
+    print("Personal Expense Tracker v2".center(50, "="))
+    expenses = load_expenses()
     
     while True:
-        print("\n1. Add expense")
+        print("1. Add expense")
         print("2. View all expenses")
-        print("3. Quit")
-        choice = input("Choose (1-3): ")
+        print("3. View summary")
+        print("4. Delete expense")
+        print("5. Quit")
+        choice = input("\nChoose (1-5): ").strip()
         
         if choice == "1":
             add_expense(expenses)
-            save_expenses(expenses)   # ← Saves every time!
+            save_expenses(expenses)
         elif choice == "2":
             show_expenses(expenses)
         elif choice == "3":
-            print("Goodbye! Your data is saved.")
+            show_summary(expenses)
+        elif choice == "4":
+            delete_expense(expenses)
+            save_expenses(expenses)
+        elif choice == "5":
+            print("Goodbye! All data saved.")
             break
         else:
-            print("Invalid choice!")
+            print("Invalid choice!\n")
 
 if __name__ == "__main__":
     main()
