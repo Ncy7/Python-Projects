@@ -1,0 +1,20 @@
+[
+    {
+        "title": "Math",
+        "author": "NPA",
+        "isbn": "123",
+        "is_borrowed": false
+    },
+    {
+        "title": "Physics",
+        "author": "KJ",
+        "isbn": "13444432",
+        "is_borrowed": false
+    },
+    {
+        "title": "Chemistry",
+        "author": "SS",
+        "isbn": "09876",
+        "is_borrowed": false
+    }
+]
